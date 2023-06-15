@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { Form, Label, Button } from './ContactForm.styled';
-import { saveContact, selectContacts } from 'redux/contactsSlice';
+import { selectContacts } from 'redux/contactsSlice';
+import { saveContactAPI } from 'api/contactsApi';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const ContactForm = () => {
       name,
       number,
     };
-    dispatch(saveContact(newContact));
+    dispatch(saveContactAPI(newContact));
     reset();
   };
 

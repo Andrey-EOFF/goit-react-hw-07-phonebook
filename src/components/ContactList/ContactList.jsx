@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StyledContactList,
@@ -6,26 +6,28 @@ import {
   StyledName,
   StyledNumber,
 } from './ContactList.styled';
-import { deleteContact } from 'redux/contactsSlice';
-import { selectContacts, selectFilter } from 'redux/contactsSlice';
+import {
+  deleteContact,
+  selectContacts,
+  fetchContacts,
+} from 'redux/contactsSlice';
 
 const ContactList = ({ onDeleteContact }) => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
-  const filter = useSelector(selectFilter);
+
+  useEffect(() => {
+    dispatch(fetchContacts()); 
+  }, [dispatch]);
 
   const handleDeleteContact = contactId => {
     dispatch(deleteContact(contactId));
     onDeleteContact(contactId);
   };
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
   return (
     <StyledContactList>
-      {filteredContacts.map(({ id, name, number }) => (
+      {contacts.map(({ id, name, number }) => (
         <StyledContactItem key={id}>
           <StyledName>{name}</StyledName> <StyledNumber>{number}</StyledNumber>
           <button onClick={() => handleDeleteContact(id)}>Delete</button>
@@ -34,6 +36,5 @@ const ContactList = ({ onDeleteContact }) => {
     </StyledContactList>
   );
 };
-
 
 export default ContactList;
