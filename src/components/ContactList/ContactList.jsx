@@ -6,31 +6,29 @@ import {
   StyledName,
   StyledNumber,
 } from './ContactList.styled';
-import {
-  deleteContact,
-  selectContacts,
-  fetchContacts,
-} from 'redux/contactsSlice';
 
-const ContactList = ({ onDeleteContact }) => {
+import * as contactsOperation from 'redux/contacts/contactsOperation';
+import { selectContacts } from 'redux/contacts/contactsSelectors';
+
+const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
   useEffect(() => {
-    dispatch(fetchContacts()); 
+    dispatch(contactsOperation.fetchContacts());
   }, [dispatch]);
 
-  const handleDeleteContact = contactId => {
-    dispatch(deleteContact(contactId));
-    onDeleteContact(contactId);
-  };
+  // const handleDeleteContact = contactId => {
+  //   dispatch(deleteContact(contactId));
+  //   onDeleteContact(contactId);
+  // };
 
   return (
     <StyledContactList>
-      {contacts.map(({ id, name, number }) => (
+      {contacts.map(({ id, name, phone }) => (
         <StyledContactItem key={id}>
-          <StyledName>{name}</StyledName> <StyledNumber>{number}</StyledNumber>
-          <button onClick={() => handleDeleteContact(id)}>Delete</button>
+          <StyledName>{name}</StyledName> <StyledNumber>{phone}</StyledNumber>
+          {/* <button onClick={() => handleDeleteContact(id)}>Delete</button> */}
         </StyledContactItem>
       ))}
     </StyledContactList>

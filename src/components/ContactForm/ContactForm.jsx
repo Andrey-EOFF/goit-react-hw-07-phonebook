@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { Form, Label, Button } from './ContactForm.styled';
-import { selectContacts } from 'redux/contactsSlice';
+// import { selectContacts } from 'redux/contactsSlice';
 import { saveContactAPI } from 'api/contactsApi';
+import { selectContacts } from 'redux/contacts/contactsSelectors';
 
 const ContactForm = () => {
   const dispatch = useDispatch();

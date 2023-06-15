@@ -4,12 +4,11 @@ import { FilterContainer, FilterInput } from './Filter.styled';
 import { selectFilter } from 'redux/filterSlice';
 import { updateFilter } from 'redux/filterSlice';
 
-
 const Filter = () => {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { value } = e.target;
     dispatch(updateFilter(value));
   };
