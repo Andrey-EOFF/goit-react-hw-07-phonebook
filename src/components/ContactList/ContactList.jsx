@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StyledContactList,
@@ -7,24 +7,35 @@ import {
   StyledNumber,
 } from './ContactList.styled';
 
-import { selectContacts } from 'redux/contactsSelectors';
+import { selectContacts, selectFilter } from 'redux/contactsSelectors';
 import { deleteContactThunk, fetchContactsThunk } from 'redux/contacts/thunks';
 
 const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
 
   useEffect(() => {
     dispatch(fetchContactsThunk());
   }, [dispatch]);
 
-  const handleDeleteContact = contactId => {
-    dispatch(deleteContactThunk(contactId));
+  const handleDeleteContact = async (contactId) => {
+    try {
+      await dispatch(deleteContactThunk(contactId));
+    } catch (error) {
+      console.log('Error deleting contact:', error);
+    }
   };
+
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const renderedContacts = filter ? filteredContacts : contacts;
 
   return (
     <StyledContactList>
-      {contacts.map(({ id, name, phone }) => (
+      {renderedContacts.map(({ id, name, phone }) => (
         <StyledContactItem key={id}>
           <StyledName>{name}</StyledName> <StyledNumber>{phone}</StyledNumber>
           <button type="button" onClick={() => handleDeleteContact(id)}>
