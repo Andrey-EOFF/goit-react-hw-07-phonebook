@@ -7,28 +7,29 @@ import {
   StyledNumber,
 } from './ContactList.styled';
 
-import * as contactsOperation from 'redux/contacts/contactsOperation';
-import { selectContacts } from 'redux/contacts/contactsSelectors';
+import { selectContacts } from 'redux/contactsSelectors';
+import { deleteContactThunk, fetchContactsThunk } from 'redux/contacts/thunks';
 
 const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
   useEffect(() => {
-    dispatch(contactsOperation.fetchContacts());
+    dispatch(fetchContactsThunk());
   }, [dispatch]);
 
-  // const handleDeleteContact = contactId => {
-  //   dispatch(deleteContact(contactId));
-  //   onDeleteContact(contactId);
-  // };
+  const handleDeleteContact = contactId => {
+    dispatch(deleteContactThunk(contactId));
+  };
 
   return (
     <StyledContactList>
       {contacts.map(({ id, name, phone }) => (
         <StyledContactItem key={id}>
           <StyledName>{name}</StyledName> <StyledNumber>{phone}</StyledNumber>
-          {/* <button onClick={() => handleDeleteContact(id)}>Delete</button> */}
+          <button type="button" onClick={() => handleDeleteContact(id)}>
+            Delete
+          </button>
         </StyledContactItem>
       ))}
     </StyledContactList>

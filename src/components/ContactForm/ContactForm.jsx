@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { Form, Label, Button } from './ContactForm.styled';
-// import { selectContacts } from 'redux/contactsSlice';
-import { saveContactAPI } from 'api/contactsApi';
-import { selectContacts } from 'redux/contacts/contactsSelectors';
+import { selectContacts } from 'redux/contactsSelectors';
+import { addContactThunk } from 'redux/contacts/thunks';
 
 const ContactForm = () => {
-  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -37,7 +36,7 @@ const ContactForm = () => {
       name,
       number,
     };
-    dispatch(saveContactAPI(newContact));
+    dispatch(addContactThunk(newContact));
     reset();
   };
 

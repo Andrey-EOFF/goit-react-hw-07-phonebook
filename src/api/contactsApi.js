@@ -6,8 +6,8 @@ export const fetchContactsAPI = async () => {
   try {
     const response = await axios.get('/contacts');
     return response.data;
-  } catch (error) {
-    throw new Error('Failed to fetch contacts');
+  } catch (e) {
+    throw e.message;
   }
 };
 
@@ -27,3 +27,5 @@ export const deleteContactAPI = async contactId => {
     throw new Error('Failed to delete contact');
   }
 };
+
+
