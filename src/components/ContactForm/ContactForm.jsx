@@ -21,7 +21,7 @@ const ContactForm = () => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     const isNameAlreadyExist = contacts.some(contact => contact.name === name);
@@ -36,8 +36,12 @@ const ContactForm = () => {
       name,
       number,
     };
-    dispatch(addContactThunk(newContact));
-    reset();
+    try {
+      await dispatch(addContactThunk(newContact));
+      reset();
+    } catch (error) {
+      console.log('Error creating contact:', error);
+    }
   };
 
   const reset = () => {
