@@ -19,9 +19,9 @@ const ContactList = () => {
     dispatch(fetchContactsThunk());
   }, [dispatch]);
 
-  const handleDeleteContact = async (contactId) => {
+  const handleDeleteContact = async contactId => {
     try {
-      await dispatch(deleteContactThunk(contactId));
+      dispatch(deleteContactThunk(contactId));
     } catch (error) {
       console.log('Error deleting contact:', error);
     }

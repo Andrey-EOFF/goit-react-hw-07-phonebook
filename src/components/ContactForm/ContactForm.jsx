@@ -7,7 +7,7 @@ import { addContactThunk } from 'redux/contacts/thunks';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
   const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ const ContactForm = () => {
     if (name === 'name') {
       setName(value);
     } else if (name === 'number') {
-      setNumber(value);
+      setPhone(value);
     }
   };
 
@@ -25,19 +25,26 @@ const ContactForm = () => {
     e.preventDefault();
 
     const isNameAlreadyExist = contacts.some(contact => contact.name === name);
+    const isPhoneAlreadyExist = contacts.some(
+      contact => contact.phone === phone
+    );
 
     if (isNameAlreadyExist) {
       alert(`${name} is already in contacts!`);
+      return;
+    }
+    if (isPhoneAlreadyExist) {
+      alert(`${phone} is already in contacts!`);
       return;
     }
 
     const newContact = {
       id: nanoid(),
       name,
-      number,
+      phone,
     };
     try {
-      await dispatch(addContactThunk(newContact));
+      dispatch(addContactThunk(newContact));
       reset();
     } catch (error) {
       console.log('Error creating contact:', error);
@@ -46,7 +53,7 @@ const ContactForm = () => {
 
   const reset = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -69,7 +76,7 @@ const ContactForm = () => {
         Number
         <input
           onChange={handleChange}
-          value={number}
+          value={phone}
           type="tel"
           name="number"
           id="numberInputId"
